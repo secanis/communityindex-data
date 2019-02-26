@@ -1,7 +1,9 @@
 ## Gemeindeverzeichnis
 Die Daten des BFS werden für die Applikationen von gemeindeverzeichnis.ch, siehe auch [https://gemeindeverzeichnis.ch](https://gemeindeverzeichnis.ch), verwendet.
 
-Diese Gemeindedaten stammen aus einem Excel des BFS, welches unter dem folgenden Link zu finden ist: [https://opendata.swiss/de/dataset/regionalportraets-kennzahlen-aller-gemeinden](https://opendata.swiss/de/dataset/regionalportraets-kennzahlen-aller-gemeinden) oder [https://www.bfs.admin.ch/bfs/de/home/statistiken/regionalstatistik/regionale-portraets-kennzahlen/gemeinden/daten-erlaeuterungen.assetdetail.2422865.html](https://www.bfs.admin.ch/bfs/de/home/statistiken/regionalstatistik/regionale-portraets-kennzahlen/gemeinden/daten-erlaeuterungen.assetdetail.2422865.html).
+Diese Gemeindedaten stammen aus einem Excel des BFS, welches unter dem folgenden Link zu finden ist:
+- [Opendata Swiss - Regionalportraets und Kennzahlen aller Gemeinden](https://opendata.swiss/de/dataset?q=Regionalportr%C3%A4ts+2018%3A+Kennzahlen+aller+Gemeinden)
+- [Website BFS - Regionalportraets und Kennzahlen aller Gemeinden](https://www.bfs.admin.ch/bfs/de/home/statistiken/regionalstatistik/regionale-portraets-kennzahlen/gemeinden.html).
 
 Dieser Datensatz beinhaltet sämtliche Gemeinder der Schweiz inkl. interessanter Kenndaten zu den jeweiligen Gemeinden.
 
