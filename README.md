@@ -1,3 +1,5 @@
+![schweizer_gemeindeverzeichnis_logo.jpg](images/schweizer_gemeindeverzeichnis_logo.png)
+
 ## Gemeindeverzeichnis
 Die Daten des BFS werden für die Applikationen von gemeindeverzeichnis.ch, siehe auch [https://gemeindeverzeichnis.ch](https://gemeindeverzeichnis.ch), verwendet.
 
