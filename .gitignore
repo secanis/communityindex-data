@@ -1,2 +1,5 @@
 *.txt
 *.html
+
+converter/node_modules
+converter/dist/*

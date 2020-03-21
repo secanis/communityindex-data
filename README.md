@@ -1,5 +1,7 @@
 ![schweizer_gemeindeverzeichnis_logo.jpg](images/schweizer_gemeindeverzeichnis_logo.png)
 
+> Neue Datenstruktur ab 2020 (Daten 2019 ebenfalls verfügbar)
+
 ## Gemeindeverzeichnis
 Die Daten des BFS werden für die Applikationen von gemeindeverzeichnis.ch, siehe auch [https://gemeindeverzeichnis.ch](https://gemeindeverzeichnis.ch), verwendet.
 
@@ -9,13 +11,32 @@ Diese Gemeindedaten stammen aus einem Excel des BFS, welches unter dem folgenden
 
 Dieser Datensatz beinhaltet sämtliche Gemeinder der Schweiz inkl. interessanter Kenndaten zu den jeweiligen Gemeinden.
 
-
 ## Verfügbare Datensätze
 
-In diesem Repo wird eine Konvertierung dieses Execls als JSON Daten angeboten. Die Daten wurden auf drei Arten konvertiert.
+In diesem Repo wird eine Konvertierung dieses Execls als JSON Daten angeboten.
+Diese Daten werden seit Anfangs 2020 als Github Release publiziert.
+Die alten Publikationen (2016-2019) sind weiterhin über die Tags erreichbar.
 
-- 2x als JSON (einmal normal formatiert und einmal verdichtet ohne Formattierung um Speicherplatz zu sparen)
-- 1x als NeDB Datenbank File für Backend Systeme auf Basis von MongoDB oder NeDB und NodeJS
+### Schema
+
+Die Datenschemas werden aus den erstellten Daten generiert und ebenfalls im Release zur Verfügung gestellt.
+Hierbei gilt es zu beachten, dass teilweise das BFS für z.B. nicht erhobene Daten einer Gemeinde Füllzeichen wie `-` oder `*` benützt.
+
+## Anleitung
+
+### Requirements
+
+- GIT
+- NodeJS
+
+### Steps
+
+- Git Clone
+- `cd dist; npm install`
+- Bevor der Converter Vorgang gestartet werden kann, müssen zuerst alle erforderlichen Daten vom [BFS])https://www.bfs.admin.ch/bfs/de/home/statistiken/regionalstatistik/regionale-portraets-kennzahlen/gemeinden.html) in den `./dist` Ordner heruntergeladen werden.
+Per default werden alle Sprachen benötigt.
+- Den Converter Vorgang wie folgt starten `./converter/bin/run.cmd -L d -L e -L f -L i -I 21.03.01`
+- Die generierten Files liegen danach unter `./converter/dist/export`
 
 ## Linzenz
 
