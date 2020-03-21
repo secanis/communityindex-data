@@ -19,7 +19,7 @@ $ npm install -g communityindex-data-converter
 $ communityindex-data-converter COMMAND
 running command...
 $ communityindex-data-converter (-v|--version|version)
-communityindex-data-converter/2020.3.0 linux-x64 node-v12.16.1
+communityindex-data-converter/2020.3.0 win32-x64 node-v12.16.0
 $ communityindex-data-converter --help [COMMAND]
 USAGE
   $ communityindex-data-converter COMMAND
