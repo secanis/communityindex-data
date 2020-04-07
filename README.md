@@ -35,10 +35,10 @@ Hierbei gilt es zu beachten, dass teilweise das BFS für z.B. nicht erhobene Dat
 - `cd dist; npm install`
 - Bevor der Converter Vorgang gestartet werden kann, müssen zuerst alle erforderlichen Daten vom [BFS])https://www.bfs.admin.ch/bfs/de/home/statistiken/regionalstatistik/regionale-portraets-kennzahlen/gemeinden.html) in den `./dist` Ordner heruntergeladen werden.
 Per default werden alle Sprachen benötigt.
-- Den Converter Vorgang wie folgt starten `./converter/bin/run.cmd -L d -L e -L f -L i -I 21.03.01`
-- Die generierten Files liegen danach unter `./converter/dist/export`
+- Den Converter Vorgang wie folgt starten `cd converter` `./bin/run.cmd -L d -L e -L f -L i -I 21.03.01`
+- Die generierten Files liegen danach unter `./dist/export`
 
-## Linzenz
+## BFS Linzenz
 
 Die Daten unterstehen den Lizenzbedignungen des BFS und der Opendata.swiss Plattfrom ([https://opendata.swiss/de/terms-of-use](https://opendata.swiss/de/terms-of-use))
 
