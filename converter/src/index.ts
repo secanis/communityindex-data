@@ -14,7 +14,7 @@ class CommunityindexDataConverter extends Command {
             char: "I",
             required: true,
             description:
-                "Version which you have downloaded, is required for the build process."
+                "BFS number which you have downloaded, is required for the build process (normally does not change)."
         }),
         version: flags.version({
             char: "v"
@@ -51,7 +51,7 @@ class CommunityindexDataConverter extends Command {
 
         log("communityindex-data converter");
         log(`fetching languages:     ${flags.langs.join()}`);
-        log(`fetching version:       ${flags.input}`);
+        log(`fetching bfs number:    ${flags.input}`);
 
         const result: any = {
             fileMetadata: null,
