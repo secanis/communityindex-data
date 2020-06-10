@@ -14,14 +14,19 @@ class CommunityindexDataConverter extends Command {
             char: "I",
             required: true,
             description:
-                "BFS number which you have downloaded, is required for the build process (normally does not change)."
+                "BFS number which you have downloaded, is required for the build process (normally does not change).",
+        }),
+        energie: flags.string({
+            char: "E",
+            required: false,
+            description: "'Energie Stadt' program id to download the dataset",
         }),
         version: flags.version({
-            char: "v"
+            char: "v",
         }),
         debug: flags.boolean({
             char: "d",
-            default: false
+            default: false,
         }),
         help: flags.help({ char: "h" }),
         langs: flags.string({
@@ -38,8 +43,8 @@ class CommunityindexDataConverter extends Command {
 \n\
     Examples:\n\
       -L d -L e\n\
-"
-        })
+",
+        }),
     };
 
     async run() {
@@ -55,7 +60,7 @@ class CommunityindexDataConverter extends Command {
 
         const result: any = {
             fileMetadata: null,
-            datastructure: null
+            datastructure: null,
         };
 
         const tasks = new Listr(
@@ -64,7 +69,7 @@ class CommunityindexDataConverter extends Command {
                     title: "preparing necessary folders",
                     task: () => {
                         CommunityindexConverterHelper.checkFolderStructure();
-                    }
+                    },
                 },
                 {
                     title: "check required files",
@@ -73,7 +78,7 @@ class CommunityindexDataConverter extends Command {
                             flags.langs as Lang[],
                             flags.input
                         );
-                    }
+                    },
                 },
                 {
                     title: "parsing excel files",
@@ -82,17 +87,17 @@ class CommunityindexDataConverter extends Command {
                             flags.langs as Lang[],
                             flags.input
                         );
-                    }
+                    },
                 },
                 {
                     title: "build data structure",
-                    task: ctx => {
+                    task: (ctx) => {
                         const listrTasks = new Listr([]);
                         result.fileMetadata.forEach((file: any, i: number) => {
                             ctx.i = 0;
                             listrTasks.add({
                                 title: `processing language '${file.lang}'`,
-                                task: ctx => {
+                                task: (ctx) => {
                                     if (ctx.i === 0) {
                                         result.datastructure = CommunityindexConverterHelper.buildUpDatastructre(
                                             result.fileMetadata[ctx.i].data,
@@ -106,21 +111,21 @@ class CommunityindexDataConverter extends Command {
                                         );
                                     }
                                     ctx.i++;
-                                }
+                                },
                             });
                         });
                         return listrTasks;
-                    }
+                    },
                 },
                 {
                     title: "export data",
-                    task: ctx => {
+                    task: (ctx) => {
                         const listrTasks = new Listr([]);
-                        Object.keys(result.datastructure).forEach(k => {
+                        Object.keys(result.datastructure).forEach((k) => {
                             ctx.i = 0;
                             listrTasks.add({
                                 title: `export data '${k}'`,
-                                task: ctx => {
+                                task: (ctx) => {
                                     const keys = Object.keys(
                                         result.datastructure
                                     );
@@ -133,28 +138,28 @@ class CommunityindexDataConverter extends Command {
                                         JSON.stringify(data, null, 2)
                                     );
                                     ctx.i++;
-                                }
+                                },
                             });
                         });
                         return listrTasks;
-                    }
+                    },
                 },
                 {
                     title: "export schema",
-                    task: ctx => {
+                    task: (ctx) => {
                         const listrTasks = new Listr([]);
-                        Object.keys(result.datastructure).forEach(k => {
+                        Object.keys(result.datastructure).forEach((k) => {
                             ctx.i = 0;
                             listrTasks.add({
                                 title: `export schema '${k}'`,
-                                task: ctx => {
+                                task: (ctx) => {
                                     const keys = Object.keys(
                                         result.datastructure
                                     );
                                     const schema = toJsonSchema(
                                         result.datastructure[keys[ctx.i]],
                                         {
-                                            arrays: { mode: "first" }
+                                            arrays: { mode: "first" },
                                         }
                                     );
                                     writeFileSync(
@@ -164,22 +169,44 @@ class CommunityindexDataConverter extends Command {
                                         JSON.stringify(schema, null, 2)
                                     );
                                     ctx.i++;
-                                }
+                                },
                             });
                         });
                         return listrTasks;
-                    }
-                }
+                    },
+                },
+                {
+                    title: "download energy city list",
+                    skip: () => {
+                        if (!flags.energie) {
+                            return "skip: no program id given";
+                        }
+                    },
+                    task: () => {
+                        if (flags.energie) {
+                            CommunityindexConverterHelper.downloadEnergyCityLabelList(
+                                flags.energie
+                            );
+                        } else {
+                            throw new Error(
+                                "energie flag was not set... please set it"
+                            );
+                        }
+                    },
+                },
             ],
             //@ts-ignore
             { collapse: false }
         );
 
-        tasks.run().then(() => {
-            this.log
-        }).catch((err: Error) => {
-            if (flags.debug) this.error(err.message);
-        });
+        tasks
+            .run()
+            .then(() => {
+                this.log;
+            })
+            .catch((err: Error) => {
+                if (flags.debug) this.error(err.message);
+            });
     }
 }
 

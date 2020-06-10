@@ -1,6 +1,7 @@
-import { mkdirSync, existsSync } from "fs";
+import { mkdirSync, existsSync, fstat, writeFileSync } from "fs";
 import { StructureSchema } from "./structure.schema";
 import { Lang } from "../models/lang";
+import * as fetch from "node-fetch";
 
 export module CommunityindexConverterHelper {
     const excelToJson = require("convert-excel-to-json");
@@ -15,7 +16,7 @@ export module CommunityindexConverterHelper {
     }
 
     export function checkRequiredFiles(langs: Lang[], version: string) {
-        langs.forEach(l => {
+        langs.forEach((l) => {
             if (!existsSync(`${distPath}/je-${l}-${version}.xlsx`)) {
                 throw new Error(
                     `Required source Excel file '${distPath}/je-${l}-${version}.xlsx' does not exist...`
@@ -25,13 +26,13 @@ export module CommunityindexConverterHelper {
     }
 
     export function parseExcel(langs: Lang[], version: string) {
-        return langs.map(l => {
+        return langs.map((l) => {
             const file = excelToJson({
-                sourceFile: `${distPath}/je-${l}-${version}.xlsx`
+                sourceFile: `${distPath}/je-${l}-${version}.xlsx`,
             });
             return {
                 lang: l,
-                data: file[Object.keys(file)[0]]
+                data: file[Object.keys(file)[0]],
             };
         });
     }
@@ -43,18 +44,18 @@ export module CommunityindexConverterHelper {
             titles,
             dataYearStamp,
             swissData,
-            communities
+            communities,
         } = prepareData(inputData);
 
         return {
             metadata: {
                 title: {
-                    [lang]: metadata.A
+                    [lang]: metadata.A,
                 },
-                version: metadata.AQ
+                version: metadata.AQ,
             },
             headers: prepareHeaders(categories, titles, dataYearStamp, lang),
-            communities: prepareCommunes(communities, lang)
+            communities: prepareCommunes(communities, lang),
         };
     }
 
@@ -69,7 +70,7 @@ export module CommunityindexConverterHelper {
             titles,
             dataYearStamp,
             swissData,
-            communities
+            communities,
         } = prepareData(inputData);
 
         datastructure.metadata.title[lang] = metadata.A;
@@ -84,6 +85,31 @@ export module CommunityindexConverterHelper {
         });
 
         return datastructure;
+    }
+
+    export function downloadEnergyCityLabelList(programId: string) {
+        fetch
+            .default(
+                `https://www.local-energy.swiss/.rest/energiestadt/v1/profiles/list/lang/de/queryString/any/programs/${programId}/counties/any`
+            )
+            .then((res) => res.json())
+            .then((json) => {
+                writeFileSync(
+                    `dist/export/energy-city.json`,
+                    JSON.stringify(json, null, 2)
+                );
+                writeFileSync(
+                    `dist/export/energy-city.metadata.json`,
+                    JSON.stringify(
+                        {
+                            date: new Date(),
+                            programId: programId,
+                        },
+                        null,
+                        2
+                    )
+                );
+            });
     }
 
     function prepareData(inputData: any) {
@@ -103,7 +129,7 @@ export module CommunityindexConverterHelper {
             titles,
             dataYearStamp: Object.entries(inputData.shift()),
             swissData: inputData.shift(),
-            communities: inputData.filter((i: any) => i.A && i.AQ)
+            communities: inputData.filter((i: any) => i.A && i.AQ),
         };
     }
 
@@ -113,24 +139,24 @@ export module CommunityindexConverterHelper {
         dataYearStamp: any[],
         lang: Lang
     ) {
-        return categories.map(v => {
+        return categories.map((v) => {
             const columns: any = [];
             Object.entries(schema[v[0]].cols).forEach((te: any) => {
                 columns.push({
                     column: te[1],
                     fullName: {
-                        [lang]: titles[te[0]]
+                        [lang]: titles[te[0]],
                     },
-                    dateOrigin: dataYearStamp[te[0]]
+                    dateOrigin: dataYearStamp[te[0]],
                 });
             });
 
             return {
                 category: schema[v[0]].key,
                 fullName: {
-                    [lang]: v[1].replace(/\s1\)|\s2\)/, "")
+                    [lang]: v[1].replace(/\s1\)|\s2\)/, ""),
                 },
-                columns
+                columns,
             };
         });
     }

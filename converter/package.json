@@ -8,24 +8,27 @@
     },
     "bugs": "https://github.com/secanis/communityindex-data/issues",
     "dependencies": {
-        "@oclif/command": "^1.5.19",
-        "@oclif/config": "^1.14.0",
-        "@oclif/plugin-help": "^2.2.3",
+        "@oclif/command": "^1.6.1",
+        "@oclif/config": "^1.15.1",
+        "@oclif/plugin-help": "^3.1.0",
         "@types/listr": "^0.14.2",
-        "convert-excel-to-json": "^1.6.1",
+        "convert-excel-to-json": "^1.7.0",
         "listr": "^0.14.3",
-        "to-json-schema": "^0.2.3",
-        "tslib": "^1.11.1"
+        "node-fetch": "^2.6.0",
+        "npm-check-updates": "^7.0.0",
+        "to-json-schema": "^0.2.5",
+        "tslib": "^2.0.0"
     },
     "devDependencies": {
         "@oclif/dev-cli": "^1.22.2",
-        "@types/node": "^10.17.17",
-        "eslint": "^5.16.0",
+        "@types/node": "^14.0.12",
+        "@types/node-fetch": "^2.5.7",
+        "eslint": "^7.2.0",
         "eslint-config-oclif": "^3.1.0",
         "eslint-config-oclif-typescript": "^0.1.0",
         "rimraf": "^3.0.2",
-        "ts-node": "^8.7.0",
-        "typescript": "^3.8.3"
+        "ts-node": "^8.10.2",
+        "typescript": "^3.9.5"
     },
     "engines": {
         "node": ">=8.0.0"
@@ -45,6 +48,7 @@
     },
     "repository": "secanis/communityindex-data",
     "scripts": {
+        "start": "bin/run",
         "posttest": "eslint . --ext .ts --config .eslintrc",
         "prepack": "rimraf lib && tsc -b && oclif-dev readme",
         "version": "oclif-dev readme && git add README.md",
