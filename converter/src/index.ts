@@ -1,40 +1,40 @@
-import { Command, flags } from "@oclif/command";
-import { writeFileSync } from "fs";
-import * as Listr from "listr";
+import { Command, flags } from '@oclif/command';
+import { writeFileSync } from 'fs';
+import * as Listr from 'listr';
 
-import { CommunityindexConverterHelper } from "./lib/helper";
-import { Lang } from "./models/lang";
+import { CommunityindexConverterHelper } from './lib/main';
+import { Lang } from './models/lang';
 
 class CommunityindexDataConverter extends Command {
     static description =
-        "Dataconverter to parse communes portraits data from the Swiss FSO";
+        'Dataconverter to parse communes portraits data from the Swiss FSO';
 
     static flags = {
         input: flags.string({
-            char: "I",
+            char: 'I',
             required: true,
             description:
-                "BFS number which you have downloaded, is required for the build process (normally does not change).",
+                'BFS number which you have downloaded, is required for the build process (normally does not change).',
         }),
         energie: flags.string({
-            char: "E",
+            char: 'E',
             required: false,
             description: "'Energie Stadt' program id to download the dataset",
         }),
         version: flags.version({
-            char: "v",
+            char: 'v',
         }),
         debug: flags.boolean({
-            char: "d",
+            char: 'd',
             default: false,
         }),
-        help: flags.help({ char: "h" }),
+        help: flags.help({ char: 'h' }),
         langs: flags.string({
-            char: "L",
+            char: 'L',
             multiple: true,
             required: true,
             description:
-                "Languages to convert, you have to download the specific files first!\n\
+                'Languages to convert, you have to download the specific files first!\n\
     Options:\n\
       d -> Deutsch/German\n\
       e -> Englisch/English\n\
@@ -43,18 +43,18 @@ class CommunityindexDataConverter extends Command {
 \n\
     Examples:\n\
       -L d -L e\n\
-",
+',
         }),
     };
 
     async run() {
         const { args, flags } = this.parse(CommunityindexDataConverter);
-        const toJsonSchema = require("to-json-schema");
+        const toJsonSchema = require('to-json-schema');
         const log = this.log;
 
         // const configuration = require("./configuration.json");
 
-        log("communityindex-data converter");
+        log('communityindex-data converter');
         log(`fetching languages:     ${flags.langs.join()}`);
         log(`fetching bfs number:    ${flags.input}`);
 
@@ -66,13 +66,13 @@ class CommunityindexDataConverter extends Command {
         const tasks = new Listr(
             [
                 {
-                    title: "preparing necessary folders",
+                    title: 'preparing necessary folders',
                     task: () => {
                         CommunityindexConverterHelper.checkFolderStructure();
                     },
                 },
                 {
-                    title: "check required files",
+                    title: 'check required files',
                     task: () => {
                         CommunityindexConverterHelper.checkRequiredFiles(
                             flags.langs as Lang[],
@@ -81,7 +81,7 @@ class CommunityindexDataConverter extends Command {
                     },
                 },
                 {
-                    title: "parsing excel files",
+                    title: 'parsing excel files',
                     task: () => {
                         result.fileMetadata = CommunityindexConverterHelper.parseExcel(
                             flags.langs as Lang[],
@@ -90,7 +90,7 @@ class CommunityindexDataConverter extends Command {
                     },
                 },
                 {
-                    title: "build data structure",
+                    title: 'build data structure',
                     task: (ctx) => {
                         const listrTasks = new Listr([]);
                         result.fileMetadata.forEach((file: any, i: number) => {
@@ -118,7 +118,7 @@ class CommunityindexDataConverter extends Command {
                     },
                 },
                 {
-                    title: "export data",
+                    title: 'export data',
                     task: (ctx) => {
                         const listrTasks = new Listr([]);
                         Object.keys(result.datastructure).forEach((k) => {
@@ -145,7 +145,7 @@ class CommunityindexDataConverter extends Command {
                     },
                 },
                 {
-                    title: "export schema",
+                    title: 'export schema',
                     task: (ctx) => {
                         const listrTasks = new Listr([]);
                         Object.keys(result.datastructure).forEach((k) => {
@@ -159,7 +159,7 @@ class CommunityindexDataConverter extends Command {
                                     const schema = toJsonSchema(
                                         result.datastructure[keys[ctx.i]],
                                         {
-                                            arrays: { mode: "first" },
+                                            arrays: { mode: 'first' },
                                         }
                                     );
                                     writeFileSync(
@@ -176,10 +176,10 @@ class CommunityindexDataConverter extends Command {
                     },
                 },
                 {
-                    title: "download energy city list",
+                    title: 'download energy city list',
                     skip: () => {
                         if (!flags.energie) {
-                            return "skip: no program id given";
+                            return 'skip: no program id given';
                         }
                     },
                     task: () => {
@@ -189,7 +189,7 @@ class CommunityindexDataConverter extends Command {
                             );
                         } else {
                             throw new Error(
-                                "energie flag was not set... please set it"
+                                'energie flag was not set... please set it'
                             );
                         }
                     },
