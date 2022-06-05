@@ -1,6 +1,5 @@
 import { mkdirSync, existsSync, writeFileSync } from 'fs';
 import { Lang } from '../models/lang';
-import * as fetch from 'node-fetch';
 import { prepareCommunes, prepareData, prepareHeaders } from './helper';
 
 export namespace CommunityindexConverterHelper {
@@ -86,28 +85,29 @@ export namespace CommunityindexConverterHelper {
         return datastructure;
     }
 
-    export function downloadEnergyCityLabelList(programId: string) {
-        fetch
-            .default(
-                `https://www.local-energy.swiss/.rest/energiestadt/v1/profiles/list/lang/de/queryString/any/programs/${programId}/counties/any`
-            )
-            .then((res) => res.json())
-            .then((json) => {
-                writeFileSync(
-                    'dist/export/energy-city.json',
-                    JSON.stringify(json, null, 2)
-                );
-                writeFileSync(
-                    'dist/export/energy-city.metadata.json',
-                    JSON.stringify(
-                        {
-                            date: new Date(),
-                            programId: programId,
-                        },
-                        null,
-                        2
-                    )
-                );
-            });
-    }
+    // legacy because Energiestadt do not longer provide this API
+    // export function downloadEnergyCityLabelList(programId: string) {
+    //     fetch
+    //         .default(
+    //             `https://www.local-energy.swiss/.rest/energiestadt/v1/profiles/list/lang/de/queryString/any/programs/${programId}/counties/any`
+    //         )
+    //         .then((res) => res.json())
+    //         .then((json) => {
+    //             writeFileSync(
+    //                 'dist/export/energy-city.json',
+    //                 JSON.stringify(json, null, 2)
+    //             );
+    //             writeFileSync(
+    //                 'dist/export/energy-city.metadata.json',
+    //                 JSON.stringify(
+    //                     {
+    //                         date: new Date(),
+    //                         programId: programId,
+    //                     },
+    //                     null,
+    //                     2
+    //                 )
+    //             );
+    //         });
+    // }
 }

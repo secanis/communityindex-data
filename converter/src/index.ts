@@ -83,10 +83,11 @@ class CommunityindexDataConverter extends Command {
                 {
                     title: 'parsing excel files',
                     task: () => {
-                        result.fileMetadata = CommunityindexConverterHelper.parseExcel(
-                            flags.langs as Lang[],
-                            flags.input
-                        );
+                        result.fileMetadata =
+                            CommunityindexConverterHelper.parseExcel(
+                                flags.langs as Lang[],
+                                flags.input
+                            );
                     },
                 },
                 {
@@ -99,16 +100,18 @@ class CommunityindexDataConverter extends Command {
                                 title: `processing language '${file.lang}'`,
                                 task: (ctx) => {
                                     if (ctx.i === 0) {
-                                        result.datastructure = CommunityindexConverterHelper.buildUpDatastructre(
-                                            result.fileMetadata[ctx.i].data,
-                                            result.fileMetadata[ctx.i].lang
-                                        );
+                                        result.datastructure =
+                                            CommunityindexConverterHelper.buildUpDatastructre(
+                                                result.fileMetadata[ctx.i].data,
+                                                result.fileMetadata[ctx.i].lang
+                                            );
                                     } else {
-                                        result.datastructure = CommunityindexConverterHelper.fillDatastructureTranslations(
-                                            result.datastructure,
-                                            result.fileMetadata[ctx.i].data,
-                                            result.fileMetadata[ctx.i].lang
-                                        );
+                                        result.datastructure =
+                                            CommunityindexConverterHelper.fillDatastructureTranslations(
+                                                result.datastructure,
+                                                result.fileMetadata[ctx.i].data,
+                                                result.fileMetadata[ctx.i].lang
+                                            );
                                     }
                                     ctx.i++;
                                 },
@@ -175,25 +178,26 @@ class CommunityindexDataConverter extends Command {
                         return listrTasks;
                     },
                 },
-                {
-                    title: 'download energy city list',
-                    skip: () => {
-                        if (!flags.energie) {
-                            return 'skip: no program id given';
-                        }
-                    },
-                    task: () => {
-                        if (flags.energie) {
-                            CommunityindexConverterHelper.downloadEnergyCityLabelList(
-                                flags.energie
-                            );
-                        } else {
-                            throw new Error(
-                                'energie flag was not set... please set it'
-                            );
-                        }
-                    },
-                },
+                // legacy because Energiestadt do not longer provide this API
+                // {
+                //     title: 'download energy city list',
+                //     skip: () => {
+                //         if (!flags.energie) {
+                //             return 'skip: no program id given';
+                //         }
+                //     },
+                //     task: () => {
+                //         if (flags.energie) {
+                //             CommunityindexConverterHelper.downloadEnergyCityLabelList(
+                //                 flags.energie
+                //             );
+                //         } else {
+                //             throw new Error(
+                //                 'energie flag was not set... please set it'
+                //             );
+                //         }
+                //     },
+                // },
             ],
             //@ts-ignore
             { collapse: false }
